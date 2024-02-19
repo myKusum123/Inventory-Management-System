@@ -13,6 +13,8 @@ from django.contrib.auth.models import Group
 from .permissions import CustomModelPermission
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters,status
+from rest_framework.parsers import MultiPartParser, FormParser
+
 
 # Create your views here.
 # @api_view(['GET'])
@@ -117,7 +119,7 @@ class CompanyInfoApiView(GenericAPIView):
     # filterset_fields = ['address']
     search_fields = ['name','address','email','contact_no']
     permission_classes = [IsAuthenticated,CustomModelPermission]
-
+    parser_classes = [MultiPartParser, FormParser]  # For handling file uploads
     def get(self,request):
         company_info_objects = self.get_queryset()
         filter_objects = self.filter_queryset(company_info_objects)
@@ -144,7 +146,7 @@ class CompanyInfoIdApiView(GenericAPIView):
         except:
             return Response({'data':'Data not found!'})
         serializer = CompanyInfoSerializer(company_info_object)
-        return Response(serializer.data)
+        return Response({"data":serializer.data})
     
     def put(self,request,pk):
         try:
