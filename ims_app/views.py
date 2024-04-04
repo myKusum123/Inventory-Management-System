@@ -119,7 +119,6 @@ class CompanyInfoApiView(GenericAPIView):
     # filterset_fields = ['address']
     search_fields = ['name','address','email','contact_no']
     permission_classes = [IsAuthenticated,CustomModelPermission]
-    parser_classes = [MultiPartParser, FormParser]  # For handling file uploads
     def get(self,request):
         company_info_objects = self.get_queryset()
         filter_objects = self.filter_queryset(company_info_objects)
